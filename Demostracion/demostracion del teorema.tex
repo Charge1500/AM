@@ -1,4 +1,4 @@
- \documentclass{article}
+\documentclass{article}
 \usepackage{amsmath, amsthm, amssymb}
 \usepackage{geometry}
 \usepackage{fancyhdr}
@@ -9,7 +9,7 @@
 \fancyfoot[R]{Ailema Matos, Raúl R. Espinosa}
 \fancyfoot[C]{\thepage}
 
-\title{}
+\title{Igualdad de las integrales inferior y superior como criterio de integrabilidad de Riemann}
 \author{
 Ailema Matos C121,
 Raúl R. Espinosa C122 
@@ -20,6 +20,11 @@ Raúl R. Espinosa C122
 \begin{document}
 \maketitle
 
+\section*{}
+
+En este documento se demuestra rigurosamente mediante un análisis detallado de las definiciones y propiedades fundamentales de la integración de Riemann 
+un teorema que nos permite asegurar que una funcion sea integrable según Riemann.\\
+
 \begin{theorem}[Condición necesaria y suficiente de integrabilidad de Riemann en funciones reales]
 Sea \( f: \mathbb{R} \to \mathbb{R} \) entonces se cumple que \[f \in \mathcal{R}[a, b] \Longleftrightarrow \underline{I} = \underline{\int_a^b} f(x) \, dx = \overline{\int_a^b} f(x) \, dx = \overline{I}\]\\
 \end{theorem}
@@ -27,7 +32,7 @@ Sea \( f: \mathbb{R} \to \mathbb{R} \) entonces se cumple que \[f \in \mathcal{R
 \textbf{Propiedades y definiciones:}
 
 \begin{enumerate}
-   \item \textbf{def 1:}  \(\overline{I} = inf \{ S(f, P): P \in P[a, b] \} \)  
+    \item \textbf{def 1:}  \(\overline{I} = inf \{ S(f, P): P \in P[a, b] \} \)  
     \item \textbf{def 2:}  \(\underline{I} = sup\{ s(f, P): P \in P[a, b] \} \)
     \item \textbf{Propiedad 1:} Sean \(P_1, P_2:  P1 \in P[a, b] \wedge P_2 \in P[a,b] \), se cumple que:
     \[

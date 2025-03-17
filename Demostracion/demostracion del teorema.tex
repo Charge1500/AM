@@ -36,10 +36,10 @@ Sea \( f: \mathbb{R} \to \mathbb{R} \) entonces se cumple que \[f \in \mathcal{R
     \item \textbf{def 2:}  \(\underline{I} = sup\{ s(f, P): P \in P[a, b] \} \)
     \item \textbf{Propiedad 1:} Sean \(P_1, P_2:  P1 \in P[a, b] \wedge P_2 \in P[a,b] \), se cumple que:
     \[
-    P_2 \supseteq P_1  \Longleftrightarrow\ S(f, P_2) \leq S(f, P_1)
+    P_2 \supset P_1  \implies S(f, P_2) \leq S(f, P_1)
     \]
     \[
-    P_2 \supseteq P_1\Longleftrightarrow\ s(f, P_2) \geq s(f, P_1)
+   P_2 \supset P_1 \implies s(f, P_2) \geq s(f, P_1)
     \]
 \end{enumerate} 
 
@@ -49,29 +49,33 @@ Para demostrar este teorema, procedemos en dos partes:
     \item \textbf{Necesidad:} 
 Demostremos que  \(f \in \mathcal{R}[a, b] \implies \underline{I} = \overline{I} \)
 
-    \textbf{Afirmacion 1:} \(\overline{I} = s(f, P_{sup}) \implies \forall  P_i: P_i \in P[a,b]\) se tiene que \(P_{sup} \supseteq P_i\).\\
-    \textbf{Afirmacion 2:} \(\underline{I} = S(f, P_{inf}) \implies \forall  P_i: P_i \in P[a,b]\) se tiene que \(P_{inf} \supseteq P_i\).
+    \textbf{Afirmacion 1:} \(\overline{I} = s(f, P_{sup}) \implies \forall  P_i: P_i \in P[a,b]\) se tiene que \(P_{sup} \supset P_i\).\\
+    \textbf{Afirmacion 2:} \(\underline{I} = S(f, P_{inf}) \implies \forall  P_i: P_i \in P[a,b]\) se tiene que \(P_{inf} \supset P_i\).
 \begin{proof}
 Demostremos la afirmacion 1:\\
 
-Sea \(\overline{I} = s(f, P_{sup})\) por la \textbf{def 2} se tiene que \(s(f, P_{sup}) = sup\{ s(f, P): P \in P[a, b] \}\) de donde por definicion de supremo se tiene para todo \(  s(f, P_i): s(f, P_i) \in \{ s(f, P): P \in P[a, b] \}\)  se cumple que \(s(f, P_{sup}) \geq s(f, P_i)\) note que para todo \(P_i \in P[a,b]\) se tiene que \(s(f, P_{sup}) \geq s(f, P_i)\) y usando la \textbf{Propiedad 1} se tiene que para todo \(P_i \in P[a,b]\) se cumple que \( P_{sup} \supseteq P_i\).
+Sea \(\overline{I} = s(f, P_{sup})\) por la \textbf{def 2} se tiene que \(s(f, P_{sup}) = sup\{ s(f, P): P \in P[a, b] \}\) .\\
+Procedamos por reducción al absurdo, supongamos que existe \(P_m: P_m \in P[a, b]\) y \(P_{sup} \not\supset P_m\).\\
+Sea \(P' = P_{sup} \cup  P_m\), note que \(P_{sup}\) está contenida en \(P'\). Llegamos a que \(P' \supset P_{sup}\) donde por la \textbf{Propiedad 2}  tenemos que \(s(f, P') \geq s(f, P_{sup})\) lo cual es una contradicción con  \(s(f, P_{sup}) = sup\{ s(f, P): P \in P[a, b] \}\). Por tanto lo supuesto es falso y \( \nexists P_m: P_{sup} \not\supset P_m \), de donde se cumple que  \(\forall  P_i: P_i \in P[a,b]\) se tiene que \(P_{sup} \supset P_i\)
 \end{proof}
 
 \begin{proof}
 Demostremos la afirmacion 2:\\
 
-Sea \(\underline{I} = S(f, P_{inf})\) por la \textbf{def 1} se tiene que \(S(f, P_{inf}) = inf\{ S(f, P): P \in P[a, b] \}\) de donde por definicion de infimo se tiene para todo \(  S(f, P_{inf}): S(f, P_i) \in \{ S(f, P): P \in P[a, b] \}\)  se cumple que \(S(f, P_{inf}) \leq S(f, P_i)\) note que para todo \(P_i \in P[a,b]\)se tiene que \(S(f, P_{inf}) \leq S(f, P_i)\) y usando la \textbf{Propiedad 1} se tiene que para todo \(P_i \in P[a,b]\) se cumple que \( P_{inf} \supseteq P_i\).
+Sea \(\underline{I} = S(f, P_{inf})\) por la \textbf{def 1} se tiene que \(S(f, P_{inf}) = inf\{ S(f, P): P \in P[a, b] \}\).
+Procedamos por reducción al absurdo, supongamos que existe \(P_m: P_m \in P[a, b]\) y \(P_{inf} \not\supset P_m\).\\
+Sea \(P' = P_{inf} \cup  P_m\), note que \(P_{inf}\) está contenida en \(P'\). Llegamos a que \(P' \supset P_{inf}\) donde por la \textbf{Propiedad 1}  tenemos que \(S(f, P') \leq S(f, P_{inf})\) lo cual es una contradicción con  \(S(f, P_{inf}) = inf\{ S(f, P): P \in P[a, b] \}\). Por tanto lo supuesto es falso y \( \nexists P_m: P_{inf} \not\supset P_m \), de donde se cumple que  \(\forall  P_i: P_i \in P[a,b]\) se tiene que \(P_{inf} \supset P_i\)
 \end{proof}
 
  Supongamos que \( f \) es integrable según Riemann. Entonces, por definición
 \[
 lim(\sigma(f, P,\{\xi_i\})) = I
 \]
-existe un único número \( I \) tal que para todo \( \epsilon > 0 \), existe una partición \( P_\epsilon \in P[a, b]\)  donde para todo \( P: P \in P[a, b] \wedge P \supseteq P_\epsilon\) se cumple que:
+existe un único número \( I \) tal que para todo \( \epsilon > 0 \), existe una partición \( P_\epsilon \in P[a, b]\)  donde para todo \( P: P \in P[a, b] \wedge P \supset P_\epsilon\) se cumple que:
     \[
     |\sigma(f, P,\{\xi_i\}) - I| < \epsilon
     \]\\
-Por la \textbf{Afirmacion 1} se tiene que \(P_{sup} \supseteq P_\epsilon\) de donde 
+Por la \textbf{Afirmacion 1} se tiene que \(P_{sup} \supset P_\epsilon\) de donde 
 \[
 |\sigma(f, P_{sup},\{\xi_i\}) - I| < \epsilon
 \]
@@ -79,7 +83,7 @@ tomando \(\{\xi_i\}\) como \(\{m_i\}\) el conjunto de los minimos de cada interv
 \[
 |\sigma(f, P_{sup},\{m_i\}) - I| < \epsilon
 \]
-Note que \(\sigma(f, P_{sup},\{m_i\}) = \Sigma m_i\Delta x_i = s(f, P_{sup})\) de donde
+Note que \(\sigma(f, P_{sup},\{m_i\}) = \sum_{i = 1}^{n} m_i\Delta x_i = s(f, P_{sup})\) de donde
 \[
 |s(f, P_{sup}) - I| < \epsilon
 \]
@@ -88,7 +92,7 @@ Note que \(\sigma(f, P_{sup},\{m_i\}) = \Sigma m_i\Delta x_i = s(f, P_{sup})\) d
 \]
 por definicion de limite se tiene que \(lim\overline{I} = I\).\\
 
-Por la \textbf{Afirmacion 2} se tiene que \(P_{inf} \supseteq P_\epsilon\) de donde 
+Por la \textbf{Afirmacion 2} se tiene que \(P_{inf} \supset P_\epsilon\) de donde 
 \[
 |\sigma(f, P_{inf},\{\xi_i\}) - I| < \epsilon
 \]
@@ -96,7 +100,7 @@ tomando \(\{\xi_i\}\) como \(\{M_i\}\) el conjunto de los maximos de cada interv
 \[
 |\sigma(f, P_{inf},\{M_i\}) - I| < \epsilon
 \]
-Note que \(\sigma(f, P_{inf},\{M_i\}) = \Sigma M_i\Delta x_i = S(f, P_{inf})\) de donde
+Note que \(\sigma(f, P_{inf},\{M_i\}) = \sum_{i = 1}^{n}  M_i\Delta x_i = S(f, P_{inf})\) de donde
 \[
 |S(f, P_{inf}) - I| < \epsilon
 \]
@@ -110,7 +114,8 @@ Note que de \(lim\overline{I} = I\) y \(lim\underline{I} = I\) se tiene que \(li
 Por tanto, concluimos que \(\overline{I} = \underline{I}\), y queda demostrado que 
 \[f \in \mathcal{R}[a, b] \implies \underline{I} = \overline{I} \]
 
-    \item \textbf{Suficiencia:} Demostremos que \(\underline{I} = \overline{I} \implies f \in \mathcal{R}[a, b]\)
+    \item \textbf{Suficiencia:} Demostremos que \(\underline{I} = \overline{I} \implies f \in \mathcal{R}[a, b]\)\\
+
 \textbf{Afirmacion 3:} \(s(f, P) \leq \sigma(f, P,\{\xi_i\}) \leq S(f, P)\)
 \begin{proof}
 Demostremos la afirmacion 3:\\
@@ -124,7 +129,7 @@ m_i \leq f(\xi_i) \leq M_i
 m_i \Delta x_i \leq f(\xi_i)\Delta x_i \leq M_i\Delta x_i
 \] 
 \[
-\Sigma m_i \Delta x_i \leq \Sigma f(\xi_i)\Delta x_i \leq \Sigma M_i\Delta x_i
+\sum_{i = 1}^{n} m_i \Delta x_i \leq \sum_{i = 1}^{n} f(\xi_i)\Delta x_i \leq \sum_{i = 1}^{n} M_i\Delta x_i
 \]
 \[
 s(f, P) \leq \sigma(f, P,\{\xi_i\}) \leq S(f, P)

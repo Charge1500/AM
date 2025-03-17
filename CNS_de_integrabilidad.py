@@ -5,7 +5,7 @@ from matplotlib.widgets import Slider
 from scipy.integrate import quad
 
 # Función para calcular las sumas de Riemann inferiores y superiores
-def riemann_sums(f, a, b, n):  
+def darboax_sums(f, a, b, n):  
     x = np.linspace(a, b, n + 1)
     dx = (b - a) / n  
     lower_sum = 0
@@ -38,15 +38,15 @@ def update_left_plots(n):
         plt.cla()  # Limpiar el subgráfico actual
     
     # Intervalo completo [a, b]
-    lower_sum_main, upper_sum_main, x_main = riemann_sums(f, a, b, n)
+    lower_sum_main, upper_sum_main, x_main = darboax_sums(f, a, b, n)
     
 
     # Sumas inferiores
     plt.subplot(2, 2, 1)  # Fila 1, Columna 1
-    plot_riemann(f, a, b, n, x_main, lower_sum_main, 'green', 'Suma Inferior (Intervalo Completo)') 
+    plot_darboax(f, a, b, n, x_main, lower_sum_main, 'green', 'Suma Inferior (Intervalo Completo)') 
     # Sumas superiores
     plt.subplot(2, 2, 3)  # Fila 2, Columna 1
-    plot_riemann(f, a, b, n, x_main, upper_sum_main, 'red', 'Suma Superior (Intervalo Completo)')
+    plot_darboax(f, a, b, n, x_main, upper_sum_main, 'red', 'Suma Superior (Intervalo Completo)')
 
 # Función para actualizar el último frame
 def update_last_frame():
@@ -91,20 +91,20 @@ def update_right_plots_impl(n):
         plt.cla()  # Limpiar el subgráfico actual
     
     # Subintervalo [c, d]
-    lower_sum_sub, upper_sum_sub, x_sub = riemann_sums(f, c, d, n)
+    lower_sum_sub, upper_sum_sub, x_sub = darboax_sums(f, c, d, n)
     
     # Sumas inferiores
     plt.subplot(2, 2, 2)  # Fila 1, Columna 2
-    plot_riemann(f, c, d, n, x_sub, lower_sum_sub, 'green', 'Suma Inferior (Subintervalo)')
+    plot_darboax(f, c, d, n, x_sub, lower_sum_sub, 'green', 'Suma Inferior (Subintervalo)')
     
     # Sumas superiores
     plt.subplot(2, 2, 4)  # Fila 2, Columna 2
-    plot_riemann(f, c, d, n, x_sub, upper_sum_sub, 'red', 'Suma Superior (Subintervalo)')
+    plot_darboax(f, c, d, n, x_sub, upper_sum_sub, 'red', 'Suma Superior (Subintervalo)')
     
     plt.draw()
 
 # Función auxiliar para graficar sumas de Riemann
-def plot_riemann(f, a, b, n, x_partition, sum_value, color, title):
+def plot_darboax(f, a, b, n, x_partition, sum_value, color, title):
     x_vals = np.linspace(a, b, 1000)
     y_vals = f(x_vals)
 

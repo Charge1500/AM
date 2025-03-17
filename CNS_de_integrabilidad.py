@@ -1,8 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
-from matplotlib.widgets import Slider
+from matplotlib.widgets import Slider, Button, TextBox
 from scipy.integrate import quad
+import warnings
 
 # Función para calcular las sumas de Darboax inferiores y superiores
 def darboax_sums(f, a, b, n):  
@@ -23,7 +24,7 @@ def darboax_sums(f, a, b, n):
 # Función para actualizar la animación (gráficos de la izquierda)
 def update_animation(frame):
     n = frame + 1  # Número de subintervalos
-    if(frame==frames-1):
+    if(frame == frames - 1):
         update_last_frame()
     else:
         update_left_plots(n) # Actualizar gráficos de la izquierda
@@ -40,7 +41,6 @@ def update_left_plots(n):
     # Intervalo completo [a, b]
     lower_sum_main, upper_sum_main, x_main = darboax_sums(f, a, b, n)
     
-
     # Sumas inferiores
     plt.subplot(2, 2, 1)  # Fila 1, Columna 1
     plot_darboax(f, a, b, n, x_main, lower_sum_main, 'green', 'Suma Inferior (Intervalo Completo)') 
@@ -76,7 +76,6 @@ def plot_area_under_curve(f, a, b, color, title):
     plt.ylabel('y')
     plt.legend()
     plt.grid()
-
 
 # Función para actualizar los gráficos de la derecha (con el slider)
 def update_right_plots(val):
@@ -131,31 +130,126 @@ def plot_darboax(f, a, b, n, x_partition, sum_value, color, title):
     plt.legend() #Muestra la leyenda del gráfico.
     plt.grid() #Añade una cuadrícula al gráfico.
 
-# Función principal
-if __name__ == "__main__":
-    # Configuración
-    f = lambda x: np.sin(x)  # Función anónima que devuelve f(x) para np.sen(x)(o la función q se escriba)
-    a, b = 0, np.pi         # Intervalo completo
-    c, d = 0, np.pi         
-    
-    fig = plt.figure(figsize=(12, 8)) #Tamaño de 12 pulgadas de ancho y 8 pulgadas de alto.
-    
-    frames = 51  # Número máximo de intervalos
-    anim = FuncAnimation(fig, update_animation, frames=frames, interval=500, repeat=False) #Basicamente llama a update_animation 50 veces(el valor de frames),cada 500ms
-    
-    # --- Slider para los gráficos de la derecha ---
-    # Añadir espacio para el slider
-    plt.subplots_adjust(bottom=0.25,hspace=0.5) 
-    ax_slider = plt.axes([0.6, 0.1, 0.3, 0.03])  # Posición,ancho y altura del slider respectivamente
-    slider = Slider(ax_slider, 'Intervalos (n)', 1, frames, valinit=1, valstep=1) 
-    
-    # Conectar el slider a la función de actualización
-    slider.on_changed(update_right_plots) #Cada vez que el usuario mueve el slider, se llama a update_right_plots
-    
-    # Dibujar gráficos iniciales
-    update_left_plots(1)  # Gráficos de la izquierda con n=1
-    update_right_plots_impl(1)  # Gráficos de la derecha con n=1
+# Función para agregar automáticamente 'np.' a las funciones matemáticas
+def add_np_prefix(func_str):
+    # Lista de funciones matemáticas comunes
+    math_functions = ['sin', 'cos', 'tan', 'exp', 'log', 'sqrt', 'arcsin', 'arccos', 'arctan']
+    for func in math_functions:
+        func_str = func_str.replace(f"{func}(", f"np.{func}(")
+    return func_str
 
-    # Ajustar automáticamente el espaciado
-    
-    plt.show()
+# Función para manejar el evento del botón "Aceptar"
+def submit(text):
+    global f, a, b, c, d
+    try:
+        # Obtener la función y los intervalos de los cuadros de texto
+        func_str = func_textbox.text
+        a = float(interval_a_textbox.text)
+        b = float(interval_b_textbox.text)
+        
+        # Validar el intervalo
+        if b <= a:
+            error_textbox.set_val("Error: 'b' debe ser mayor que 'a'.")
+            return
+        if (b - a) > 25:
+            error_textbox.set_val("Error: El intervalo (b - a) debe ser <= 25.")
+            return
+        
+        # Validar que la función esté evaluada en x
+        if 'x' not in func_str:
+            error_textbox.set_val("Error: La función debe estar evaluada en 'x'.")
+            return
+        
+        # Agregar automáticamente 'np.' a las funciones matemáticas
+        func_str = add_np_prefix(func_str)
+        
+        # Validar la función
+        try:
+            # Probar la función con un valor de prueba
+            test_x = 1.0
+            test_result = eval(func_str, {'np': np, 'x': test_x})
+            if not isinstance(test_result, (int, float)):
+                error_textbox.set_val("Error: Función no válida.")
+                return
+        except Exception as e:
+            error_textbox.set_val("Error: Función no válida.")
+            return
+        
+        # Definir la función
+        f = lambda x: eval(func_str, {'np': np, 'x': x})
+        
+        # Verificar si la función es integrable en el intervalo [a, b]
+        try:
+            with warnings.catch_warnings():
+                warnings.filterwarnings("error")  # Convertir advertencias en excepciones
+                integral_value, _ = quad(f, a, b)
+        except Exception as e:
+            error_textbox.set_val("Error: La función no es integrable en el intervalo dado.")
+            return
+        
+        # Configurar el subintervalo [c, d] igual al intervalo completo [a, b]
+        c, d = a, b
+        
+        # Eliminar los cuadros de texto y el botón
+        func_textbox.ax.set_visible(False)
+        interval_a_textbox.ax.set_visible(False)
+        interval_b_textbox.ax.set_visible(False)
+        button.ax.set_visible(False)
+        error_textbox.ax.set_visible(False)
+        
+        # Ajustar el espacio para los gráficos
+        plt.subplots_adjust(bottom=0.1, hspace=0.5)
+        
+        # Iniciar la animación
+        global anim
+        anim = FuncAnimation(fig, update_animation, frames=frames, interval=500, repeat=False)
+        
+        # Añadir slider
+        ax_slider = plt.axes([0.6, 0.025, 0.3, 0.03])
+        global slider
+        slider = Slider(ax_slider, 'Intervalos (n)', 1, 300, valinit=1, valstep=1)
+        slider.on_changed(update_right_plots)
+        
+        # Dibujar gráficos iniciales
+        update_left_plots(1)
+        update_right_plots_impl(1)
+        
+        plt.draw()
+    except ValueError:
+        error_textbox.set_val("Error: 'a' y 'b' deben ser números válidos.")
+    except Exception as e:
+        error_textbox.set_val(f"Error: {e}")
+
+# Configuración inicial
+f = lambda x: np.sin(x)  # Función por defecto
+a, b = 0, np.pi         # Intervalo por defecto
+c, d = 0, np.pi
+frames = 51
+
+# Crear la figura y los cuadros de texto
+fig = plt.figure(figsize=(12, 8))
+plt.subplots_adjust(bottom=0.4)
+
+# Cuadro de texto para la función
+ax_func = plt.axes([0.3, 0.6, 0.4, 0.05])
+func_textbox = TextBox(ax_func, 'f(x)', initial='sin(x)')
+
+# Cuadro de texto para el intervalo a
+ax_interval_a = plt.axes([0.3, 0.5, 0.18, 0.05])
+interval_a_textbox = TextBox(ax_interval_a, 'a', initial='0')
+
+# Cuadro de texto para el intervalo b
+ax_interval_b = plt.axes([0.52, 0.5, 0.18, 0.05])
+interval_b_textbox = TextBox(ax_interval_b, 'b', initial='5')
+
+# Cuadro de texto para mostrar errores (no editable)
+ax_error = plt.axes([0.3, 0.4, 0.4, 0.05])
+error_textbox = TextBox(ax_error, 'Mensajes de error', initial='Buen día camarada')
+error_textbox.set_active(False)  # Deshabilitar la edición
+
+# Botón "Aceptar"
+ax_button = plt.axes([0.4, 0.3, 0.2, 0.075])
+button = Button(ax_button, 'Aceptar')
+button.on_clicked(submit)
+
+plt.show()

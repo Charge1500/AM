@@ -36,10 +36,10 @@ Sea \( f: \mathbb{R} \to \mathbb{R} \) entonces se cumple que \[f \in \mathcal{R
     \item \textbf{def 2:}  \(\underline{I} = sup\{ s(f, P): P \in P[a, b] \} \)
     \item \textbf{Propiedad 1:} Sean \(P_1, P_2:  P1 \in P[a, b] \wedge P_2 \in P[a,b] \), se cumple que:
     \[
-    P_2 \supseteq P_1  \Longleftrightarrow\ S(f, P_2) <= S(f, P_1)
+    P_2 \supseteq P_1  \Longleftrightarrow\ S(f, P_2) \leq S(f, P_1)
     \]
     \[
-    P_2 \supseteq P_1\Longleftrightarrow\ s(f, P_2) >= s(f, P_1)
+    P_2 \supseteq P_1\Longleftrightarrow\ s(f, P_2) \geq s(f, P_1)
     \]
 \end{enumerate} 
 
@@ -54,13 +54,13 @@ Demostremos que  \(f \in \mathcal{R}[a, b] \implies \underline{I} = \overline{I}
 \begin{proof}
 Demostremos la afirmacion 1:\\
 
-Sea \(\overline{I} = s(f, P_{sup})\) por la \textbf{def 2} se tiene que \(s(f, P_{sup}) = sup\{ s(f, P): P \in P[a, b] \}\) de donde por definicion de supremo se tiene para todo \(  s(f, P_i): s(f, P_i) \in \{ s(f, P): P \in P[a, b] \}\)  se cumple que \(s(f, P_{sup}) >= s(f, P_i)\) note que para todo \(P_i \in P[a,b]\) se tiene que \(s(f, P_{sup}) >= s(f, P_i)\) y usando la \textbf{Propiedad 1} se tiene que para todo \(P_i \in P[a,b]\) se cumple que \( P_{sup} \supseteq P_i\).
+Sea \(\overline{I} = s(f, P_{sup})\) por la \textbf{def 2} se tiene que \(s(f, P_{sup}) = sup\{ s(f, P): P \in P[a, b] \}\) de donde por definicion de supremo se tiene para todo \(  s(f, P_i): s(f, P_i) \in \{ s(f, P): P \in P[a, b] \}\)  se cumple que \(s(f, P_{sup}) \geq s(f, P_i)\) note que para todo \(P_i \in P[a,b]\) se tiene que \(s(f, P_{sup}) \geq s(f, P_i)\) y usando la \textbf{Propiedad 1} se tiene que para todo \(P_i \in P[a,b]\) se cumple que \( P_{sup} \supseteq P_i\).
 \end{proof}
 
 \begin{proof}
 Demostremos la afirmacion 2:\\
 
-Sea \(\underline{I} = S(f, P_{inf})\) por la \textbf{def 1} se tiene que \(S(f, P_{inf}) = inf\{ S(f, P): P \in P[a, b] \}\) de donde por definicion de infimo se tiene para todo \(  S(f, P_{inf}): S(f, P_i) \in \{ S(f, P): P \in P[a, b] \}\)  se cumple que \(S(f, P_{inf}) <= S(f, P_i)\) note que para todo \(P_i \in P[a,b]\)se tiene que \(S(f, P_{inf}) <= S(f, P_i)\) y usando la \textbf{Propiedad 1} se tiene que para todo \(P_i \in P[a,b]\) se cumple que \( P_{inf} \supseteq P_i\).
+Sea \(\underline{I} = S(f, P_{inf})\) por la \textbf{def 1} se tiene que \(S(f, P_{inf}) = inf\{ S(f, P): P \in P[a, b] \}\) de donde por definicion de infimo se tiene para todo \(  S(f, P_{inf}): S(f, P_i) \in \{ S(f, P): P \in P[a, b] \}\)  se cumple que \(S(f, P_{inf}) \leq S(f, P_i)\) note que para todo \(P_i \in P[a,b]\)se tiene que \(S(f, P_{inf}) \leq S(f, P_i)\) y usando la \textbf{Propiedad 1} se tiene que para todo \(P_i \in P[a,b]\) se cumple que \( P_{inf} \supseteq P_i\).
 \end{proof}
 
  Supongamos que \( f \) es integrable según Riemann. Entonces, por definición
@@ -111,22 +111,23 @@ Por tanto, concluimos que \(\overline{I} = \underline{I}\), y queda demostrado q
 \[f \in \mathcal{R}[a, b] \implies \underline{I} = \overline{I} \]
 
     \item \textbf{Suficiencia:} Demostremos que \(\underline{I} = \overline{I} \implies f \in \mathcal{R}[a, b]\)
-\textbf{Afirmacion 3:} \(s(f, P) <= \sigma(f, P,\{\xi_i\}) <= S(f, P)\)
+\textbf{Afirmacion 3:} \(s(f, P) \leq \sigma(f, P,\{\xi_i\}) \leq S(f, P)\)
 \begin{proof}
 Demostremos la afirmacion 3:\\
+
 Sean \(\{m_i\}\) el conjunto de los minimos de cada intervalo de \(P\) y \(\{M_i\}\) el conjunto de los maximos de cada intervalo de \(P\).
 Note que 
 \[
-m_i <= f(\xi_i) <= M_i
+m_i \leq f(\xi_i) \leq M_i
 \]
 \[
-m_i \Delta x_i <= f(\xi_i)\Delta x_i <= M_i\Delta x_i
+m_i \Delta x_i \leq f(\xi_i)\Delta x_i \leq M_i\Delta x_i
 \] 
 \[
-\Sigma m_i \Delta x_i <= \Sigma f(\xi_i)\Delta x_i <= \Sigma M_i\Delta x_i
+\Sigma m_i \Delta x_i \leq \Sigma f(\xi_i)\Delta x_i \leq \Sigma M_i\Delta x_i
 \]
 \[
-s(f, P) <= \sigma(f, P,\{\xi_i\}) <= S(f, P)
+s(f, P) \leq \sigma(f, P,\{\xi_i\}) \leq S(f, P)
 \]
 \end{proof}
 Supongamos que  \(\underline{I} = \overline{I}\) y sea \(I\): \(I = \underline{I} = \overline{I}\).\\
@@ -137,14 +138,14 @@ S(f, P) - \overline{I} >= 0 \wedge lim (S(f, P) - \overline{I}) = 0
 \]
 
 \[
-\underline{I} - s(f, P) >= 0 \wedge lim (s(f, P) - \underline{I}) = 0
+\underline{I} - s(f, P) \geq 0 \wedge lim (s(f, P) - \underline{I}) = 0
 \]
 Por definicion de limite para todo \(x > 0, y > 0\), tomando \(\epsilon = max(x, y)\) se tienen las desigualdades 
 \[
-0< |S(f, P) - \overline{I} | < x <= \epsilon
+0< |S(f, P) - \overline{I} | < x \leq \epsilon
 \]
 \[
-0< |s(f, P) - \underline{I} | < y <= \epsilon 
+0< |s(f, P) - \underline{I} | < y \leq \epsilon 
 \]
 que son equivalentes a
 \[
@@ -155,15 +156,15 @@ que son equivalentes a
 \]
 Por la \textbf{Afirmacion 3} tenemos que 
 \[
-s(f, P) <= \sigma(f, P,\{\xi_i\}) <= S(f, P)
+s(f, P) \leq \sigma(f, P,\{\xi_i\}) \leq S(f, P)
 \]
 restando \(I\)
 \[
-s(f, P) -\underline{I} <= \sigma(f, P,\{\xi_i\}) - I<= S(f, P) - \overline{I}
+s(f, P) -\underline{I} \leq \sigma(f, P,\{\xi_i\}) - I \leq S(f, P) - \overline{I}
 \]
 usando las desigualdades anteriores llegamos a 
 \[
--\epsilon < s(f, P) -\underline{I} <= \sigma(f, P,\{\xi_i\}) - I<= S(f, P) - \overline{I} <= \epsilon
+-\epsilon < s(f, P) -\underline{I} \leq \sigma(f, P,\{\xi_i\}) - I \leq S(f, P) - \overline{I} < \epsilon
 \]
 que se puede escribir como
 \[

@@ -4,7 +4,7 @@ from matplotlib.animation import FuncAnimation
 from matplotlib.widgets import Slider
 from scipy.integrate import quad
 
-# Función para calcular las sumas de Riemann inferiores y superiores
+# Función para calcular las sumas de Darboax inferiores y superiores
 def darboax_sums(f, a, b, n):  
     x = np.linspace(a, b, n + 1)
     dx = (b - a) / n  
@@ -103,7 +103,7 @@ def update_right_plots_impl(n):
     
     plt.draw()
 
-# Función auxiliar para graficar sumas de Riemann
+# Función auxiliar para graficar sumas de Darboax
 def plot_darboax(f, a, b, n, x_partition, sum_value, color, title):
     x_vals = np.linspace(a, b, 1000)
     y_vals = f(x_vals)

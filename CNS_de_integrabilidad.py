@@ -22,16 +22,25 @@ def update_right_plots(val):
     n = int(slider.val)
     update_right_plots_impl(f,c,d,n)
 
+def evaluate_math_expression(expression: str) -> float:
+    try:
+        expr = add_np_prefix(expression)
+        env = {'np': np}
+        return float(eval(expr, env))
+    except Exception as e:
+        raise ValueError(f"Error en expresión: {str(e)}")
+
 def submit(text):
     global f, a, b, c, d
     try:
+        
         func_str = func_textbox.text
         a = interval_a_textbox.text
         b = interval_b_textbox.text
         
         func_str = add_np_prefix(func_str)
-        a = float(add_np_prefix(a))
-        b = float(add_np_prefix(b))
+        a = evaluate_math_expression(interval_a_textbox.text)
+        b = evaluate_math_expression(interval_b_textbox.text)
         if b <= a:
             error_textbox.set_val("Error: 'b' debe ser mayor que 'a'")
             return
@@ -42,8 +51,6 @@ def submit(text):
         if 'x' not in func_str:
             error_textbox.set_val("La función debe contener 'x'")
             return
-        
-        
         
         try:
             test_result = eval(func_str, {'np': np, 'x': 1.0})
@@ -154,6 +161,8 @@ legend_text = (
     "tan(x) → tan(x)\n"
     "e^x → exp(x)\n"
     "ln(x) → log(x)\n"
+    "x^y → x^y\n"
+    "log2(x) → log2(x)\n"
     "log10(x) → log10(x)\n"
     "arcsen(x) → arcsin(x)\n"
     "arccos(x) → arccos(x)\n"

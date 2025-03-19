@@ -61,6 +61,7 @@ def update_last_frame():
         plt.cla()
     
     integral_value, _ = quad(f, a, b)
+    integral_value, _ = quad(f, a, b)
     
     plt.subplot(2, 2, 1)
     plot_area_under_curve(f, a, b, COLOR_PALETTE['primary'], f'Área Exacta: {integral_value:.4f}')
@@ -78,6 +79,7 @@ def plot_area_under_curve(f, a, b, color, title):
     plt.gca().set_facecolor('#FFFFFF')
 
 def update_right_plots(val):
+    n = int(slider.val)
     n = int(slider.val)
     update_right_plots_impl(n)
 

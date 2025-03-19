@@ -18,7 +18,7 @@ def update_left_plots(f,a,b,n):
     plt.subplot(2, 2, 3)
     plot_darboax(f, a, b, n, x_main, upper_sum_main, COLOR_PALETTE['secondary'], 'Suma Superior')
 
-def update_last_frame():
+def update_last_frame(f,a,b):
     for i in [1, 3]:
         plt.subplot(2, 2, i)
         plt.cla()

@@ -14,12 +14,11 @@ import warnings
 def update_animation(frame):
     n = frame + 1
     if frame == frames - 1:
-        update_last_frame()
+        update_last_frame(f,a,b)
     else:
         update_left_plots(f,a,b,n)
     plt.draw()
 def update_right_plots(val):
-    n = int(slider.val)
     n = int(slider.val)
     update_right_plots_impl(f,c,d,n)
 

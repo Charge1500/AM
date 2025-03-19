@@ -26,9 +26,12 @@ def submit(text):
     global f, a, b, c, d
     try:
         func_str = func_textbox.text
-        a = float(interval_a_textbox.text)
-        b = float(interval_b_textbox.text)
+        a = interval_a_textbox.text
+        b = interval_b_textbox.text
         
+        func_str = add_np_prefix(func_str)
+        a = float(add_np_prefix(a))
+        b = float(add_np_prefix(b))
         if b <= a:
             error_textbox.set_val("Error: 'b' debe ser mayor que 'a'")
             return
@@ -40,7 +43,7 @@ def submit(text):
             error_textbox.set_val("La función debe contener 'x'")
             return
         
-        func_str = add_np_prefix(func_str)
+        
         
         try:
             test_result = eval(func_str, {'np': np, 'x': 1.0})
@@ -65,6 +68,7 @@ def submit(text):
         
         for widget in [func_textbox, interval_a_textbox, interval_b_textbox, button,error_textbox]:
             widget.ax.set_visible(False)
+        legend_ax.set_visible(False)
         
         plt.subplots_adjust(bottom=0.15, hspace=0.5)
         
@@ -106,12 +110,12 @@ fig = plt.figure(figsize=(12, 8), facecolor=COLOR_PALETTE['background'])
 plt.subplots_adjust(bottom=0.4)
 
 # Widgets de entrada
-func_textbox = create_rounded_widget([0.25, 0.75, 0.5, 0.06], 'f(x) = ', 'sin(x)')
-interval_a_textbox = create_rounded_widget([0.25, 0.65, 0.2, 0.06], 'a = ', '0')
-interval_b_textbox = create_rounded_widget([0.55, 0.65, 0.2, 0.06], 'b = ', '5')
+func_textbox = create_rounded_widget([0.25, 0.6, 0.5, 0.06], 'f(x) = ', 'sin(x)')
+interval_a_textbox = create_rounded_widget([0.25, 0.5, 0.2, 0.06], 'a = ', '0')
+interval_b_textbox = create_rounded_widget([0.55, 0.5, 0.2, 0.06], 'b = ', '5')
 
 # Botón con bordes redondeados
-button_ax = plt.axes([0.4, 0.55, 0.2, 0.07])
+button_ax = plt.axes([0.4, 0.4, 0.2, 0.07])
 button_ax.axis('off')
 button_box = FancyBboxPatch(
     (0, 0), 1, 1,
@@ -128,7 +132,7 @@ button.label.set_fontweight('bold')
 button.on_clicked(submit)
 
 # Cuadro de error
-error_ax = plt.axes([0.25, 0.45, 0.5, 0.06])
+error_ax = plt.axes([0.25, 0.3, 0.5, 0.06])
 error_ax.axis('off')
 error_box = FancyBboxPatch(
     (0, 0), 1, 1,
@@ -141,4 +145,47 @@ error_ax.add_patch(error_box)
 error_textbox = TextBox(error_ax, '', initial='Ingrese función e intervalos [a,b] (La máxima longitud entre a,b solo puede ser 25)')
 error_textbox.set_active(False)
 
+# Crear leyenda de funciones
+legend_text = (
+    "Instrucciones:\n"
+    "√x → sqrt(x)\n"
+    "sen(x) → sin(x)\n"
+    "cos(x) → cos(x)\n"
+    "tan(x) → tan(x)\n"
+    "e^x → exp(x)\n"
+    "ln(x) → log(x)\n"
+    "log10(x) → log10(x)\n"
+    "arcsen(x) → arcsin(x)\n"
+    "arccos(x) → arccos(x)\n"
+    "arctan(x) → arctan(x)"
+)
+
+# Configurar posición y estilo de la leyenda
+legend_ax = plt.axes([0.85, 0.82, 0.3, 0.15], facecolor='none')
+legend_ax.axis('off')
+
+# Crear caja decorativa
+legend_box = FancyBboxPatch(
+    (0, 0), 1, 1,
+    boxstyle="round,pad=0.1,rounding_size=0.05",
+    ec=COLOR_PALETTE['secondary'],
+    fc=COLOR_PALETTE['background'],
+    lw=1
+)
+legend_ax.add_patch(legend_box)
+
+# Añadir texto
+legend_ax.text(
+    0.05, 0.95, legend_text,
+    ha='left', va='top',
+    color=COLOR_PALETTE['text'],
+    fontsize=9,
+    linespacing=1.5,
+    transform=legend_ax.transAxes,
+    bbox=dict(
+        boxstyle='round,pad=0',
+        facecolor='none',
+        edgecolor='none'
+    )
+)
 plt.show()

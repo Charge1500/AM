@@ -27,7 +27,8 @@ En este documento se demuestra rigurosamente mediante un análisis detallado de 
 un teorema que nos permite asegurar que una funcion sea integrable según Riemann.\\
 
 \begin{theorem}[Condición necesaria y suficiente de integrabilidad de Riemann en funciones reales]
-Sea \( f: \mathbb{R} \to \mathbb{R} \) entonces se cumple que \[f \in \mathcal{R}[a, b] \Longleftrightarrow \forall \epsilon>0  \exists P_\epsilon \in P[a, b]: P \in P[a, b] \wedge P \supset P_\epsilon \implies S(f, P) - s(f, P) < \epsilon \Longleftrightarrow \underline{I} = \overline{I}\]\\
+Sea \( f: \mathbb{R} \to \mathbb{R} \) entonces se cumple que 
+\[f \in \mathcal{R}[a, b] \Longleftrightarrow \forall \epsilon>0\ ,  \exists P_\epsilon \in P[a, b]: P \in P[a, b] \wedge P \supset P_\epsilon \implies S(f, P) - s(f, P) < \epsilon \Longleftrightarrow \underline{I} = \overline{I}\]\\
 \end{theorem}
 
 \textbf{Definiciones:}
@@ -36,18 +37,12 @@ Sea \( f: \mathbb{R} \to \mathbb{R} \) entonces se cumple que \[f \in \mathcal{R
    \item \textbf{def de Riemann integrable:} \(f \in \mathcal{R}[a, b] \Longleftrightarrow   \exists lim(\sigma(f, P,\{\xi_i\}))\)
     \item \textbf{def de Sumas de Darboax:} 
 \begin{enumerate}
-	\item jfnd
+	\item \textbf{Suma superior}: \(S(f, P) = \sum_{i = 1}^{n} M_i\Delta_i\)
+           \item \textbf{Suma inferior}: \(s(f,P) =\sum_{i = 1}^{n}m_i\Delta_i\)
 \end{enumerate}
-    \item \textbf{def 1:}  \(\overline{I} = inf \{ S(f, P): P \in P[a, b] \} \)  
-    \item \textbf{def 2:}  \(\underline{I} = sup\{ s(f, P): P \in P[a, b] \} \)
+    \item \textbf{def de Integral superior}  \(\overline{I} = inf \{ S(f, P): P \in P[a, b] \} \)  
+    \item \textbf{def de Integral inferior}  \(\underline{I} = sup\{ s(f, P): P \in P[a, b] \} \)
 \end{enumerate} 
-
-\begin{proof}
-Para demostrar este teorema, procedemos en dos partes:
-\begin{enumerate}
-    \item \textbf{Necesidad:} 
-Demostremos que  \(f \in \mathcal{R}[a, b] \implies \underline{I} = \overline{I} \)
-
 \textbf{Afirmacion 1:} \(s(f, P) \leq \sigma(f, P,\{\xi_i\}) \leq S(f, P)\)
 
 \begin{proof}
@@ -69,65 +64,125 @@ s(f, P) \leq \sigma(f, P,\{\xi_i\}) \leq S(f, P)
 \]
 \end{proof}
 
- Supongamos que \( f \) es integrable según Riemann. Entonces, por la \textbf{def 0}
+\textbf{Afirmacion 2:} \(s(f, P) = inf\{\sigma(f, P,\{\xi_i\})\} \wedge S(f, P) = sup\{\sigma(f, P,\{\xi_i\})\}\)
+\begin{proof}
+Demostremos la afirmacion 2:\\
+
+Tenemos por la \textbf{Afirmacion 1} que \(s(f, P)\) y \(S(f,P)\) son cotas inferior y superior de \(\{\sigma(f, P,\{\xi_i\}\) respectivamente.\\
+
+ Demostremos que son la mayor de las cotas inferiores y la menor de las cotas superiores respectivamente.\\
+
+Dado \(\epsilon > 0\), por definición de ínfimo, para cada \(i\) existe \(\xi_i \in [x_{i-1}, x_i]\) tal que
+\[
+f(\xi_i) < m_i + \frac{\epsilon}{b - a}.
+\]
+de donde
+\[
+\sigma(f, P, \{\xi_i\}) = \sum_{i=1}^n f(\xi_i) \Delta x_i < \sum_{i=1}^n \left(m_i + \frac{\epsilon}{b - a}\right) \Delta x_i.
+\]
+
+\[
+\sigma(f, P, \{\xi_i\}) < \sum_{i=1}^n m_i \Delta x_i+ \frac{\epsilon}{b - a} \sum_{i=1}^n \Delta x_i = s(f, P) + \epsilon.
+\]
+
+Queda demostrado que 
+   \( \forall \epsilon > 0,\ \exists \{\xi_i\} \) con \( \sigma(f, P, \{\xi_i\}) < s(f, P) + \epsilon \), que es lo mismo que \(s(f, P)\) es la mayor de las cotas inferiores por lo que es infimo.\\
+
+Dado \(\epsilon > 0\), por definición de supremo, para cada \(i\) existe \(\xi_i \in [x_{i-1}, x_i]\) tal que
+\[
+f(\xi_i) > M_i + \frac{\epsilon}{b - a}.
+\]
+de donde
+\[
+\sigma(f, P, \{\xi_i\}) = \sum_{i=1}^n f(\xi_i) \Delta x_i > \sum_{i=1}^n \left(M_i + \frac{\epsilon}{b - a}\right) \Delta x_i.
+\]
+
+\[
+\sigma(f, P, \{\xi_i\}) > \sum_{i=1}^n M_i \Delta x_i+ \frac{\epsilon}{b - a} \sum_{i=1}^n \Delta x_i = S(f, P) + \epsilon.
+\]
+
+Queda demostrado que 
+   \( \forall \epsilon > 0,\ \exists \{\xi_i\} \) con \( \sigma(f, P, \{\xi_i\}) > S(f, P) + \epsilon \), que es lo mismo que \(S(f, P)\) es la menor de las cotas inferiores por lo que es infimo.
+
+
+
+
+\end{proof}
+
+
+
+\begin{proof}\textbf{Demostracion del teorema}\\
+
+Para demostrar el teorema, procedemos en tres partes:
+\begin{enumerate}
+\item \([f \in \mathcal{R}[a, b] \implies \forall \epsilon>0\ ,  \exists P_\epsilon \in P[a, b]: P \in P[a, b] \wedge P \supset P_\epsilon \implies S(f, P) - s(f, P) < \epsilon\)
+\item  \(\forall \epsilon>0\ ,  \exists P_\epsilon \in P[a, b]: P \in P[a, b] \wedge P \supset P_\epsilon \implies S(f, P) - s(f, P) < \epsilon \implies \underline{I} = \overline{I}\)
+\item \(\underline{I} = \overline{I} \implies [f \in \mathcal{R}[a, b]\)
+\end{enumerate}
+\begin{enumerate}
+  \item \([f \in \mathcal{R}[a, b] \implies \forall \epsilon>0\ ,  \exists P_\epsilon \in P[a, b]: (P \in P[a, b] \wedge P \supset P_\epsilon \implies S(f, P) - s(f, P) < \epsilon)\)
+\begin{proof}
+
+ Supongamos que \( f  \in \mathcal{R}[a, b]\). Entonces, por la \textbf{def de Riemann integrable}
 \[
 lim(\sigma(f, P,\{\xi_i\})) = I
 \]
-existe un único número \( I \) tal que \( \forall \epsilon > 0 \), existe una partición \( P_\epsilon \in P[a, b]\)  donde \(\forall P: P \in P[a, b] \wedge P \supset P_\epsilon\) se cumple que:
+existe un único número \( I \) tal que \( \forall \epsilon > 0 \), existe una partición \( P_\frac{\epsilon}{2} \in P[a, b]\)  donde \(\forall P: P \in P[a, b] \wedge P \supset P_\frac{\epsilon}{2}\) se cumple que:
     \[
-    |\sigma(f, P,\{\xi_i\}) - I| < \epsilon
-    \]\\
-Por la \textbf{Afirmacion 1} se tiene que \(s(f, P) \leq \sigma(f, P,\{\xi_i\}) \leq S(f, P)\) usando la desigualdad de la derecha 
-\[
-\sigma(f, P,\{\xi_i\}) \leq S(f, P)
-\]
-restando \(\overline{I}\) en ambos miembros
-\[
-\sigma(f, P,\{\xi_i\}) - \overline{I} \leq S(f, P) - \overline{I}
-\]
-por la \textbf{def 1} tenemos que \(lim (S(f, P)) = \overline{I}\) donde por definicion\\
-\(\forall \epsilon > 0 \exists P_\epsilon: \forall P: P \in P[a, b] \wedge P \supset P_\epsilon\) se cumple que
-\[
- |S(f, P) - \overline{I}| < \epsilon
-\]
-usando ademas la desigualdad anterior llegamos a que
-\[
-|\sigma(f, P,\{\xi_i\}) - \overline{I}| \leq |S(f, P) - \overline{I}| < \epsilon
-\]
-donde tenemos que  \(\forall \epsilon > 0 \exists P_\epsilon: \forall P: P \in P[a, b] \wedge P \supset P_\epsilon\)
-\[
-|\sigma(f, P,\{\xi_i\}) - \overline{I}| < \epsilon 
-\]
-entonces por definicion de limite \(lim( \sigma(f, P,\{\xi_i\})) = \overline{I}\) y como el limite es unico, llegamos a que \(\overline{I} = I\).\\
-
-Por la \textbf{Afirmacion 1} se tiene que \(s(f, P) \leq \sigma(f, P,\{\xi_i\}) \leq S(f, P)\) usando la desigualdad de la izquierda
-\[
-s(f, P) \leq \sigma(f, P,\{\xi_i\})
-\]
-restando \(I\) en ambos miembros
-\[
-s(f, P) - I \leq \sigma(f, P,\{\xi_i\}) - I
-\]
-usando que \( \forall \epsilon > 0 \), existe una partición \( P_\epsilon \in P[a, b]\): \(\forall P: P \in P[a, b] \wedge P \supset P_\epsilon\) se cumple
-    \[
-    |\sigma(f, P,\{\xi_i\}) - I| < \epsilon
+    |\sigma(f, P,\{\xi_i\}) - I| < \frac\epsilon2
     \]
-tenemos que
-    \[
-|s(f, P) - I| \leq |\sigma(f, P,\{\xi_i\}) - I| < \epsilon
-    \]
-de donde se obtiene que  \(\forall \epsilon > 0 \exists P_\epsilon: \forall P: P \in P[a, b] \wedge P \supset P_\epsilon\)
-    \[
-|s(f, P) - I| < \epsilon
-    \]
-entonces por definicion de limite \(lim(s(f, P)) = I\) pero por la \textbf{def 2} tenemos que \(lim(s(f, P)) = \underline{I}\) y como el limite es unico, llegamos a que \(I = \underline{I}\).\\
+por la \textbf{Afirmacion 2} se tiene \(s(f, P) = inf\{\sigma(f, P,\{\xi_i\})\}\), de donde por definicion de infimo
+\( \forall \epsilon> 0 \exists \{\xi_i\}_\frac{\epsilon}{2}:\)
+\[
+s(f, P) \leq \sigma(f, P,\{\xi_i\}_\frac{\epsilon}{2}) < s(f, P) + \frac{\epsilon}{2}
+\]
+multiplicvando por (-1)
+\[
+-s(f, P) \geq -\sigma(f, P,\{\xi_i\}_\frac{\epsilon}{2}) > -s(f, P) - \frac{\epsilon}{2}
+\]
+por la \textbf{Afirmacion 2} se tiene \(S(f, P) = sup\{\sigma(f, P,\{\xi_i\})\}\), de donde por definicion de supremo 
+\( \forall \epsilon> 0 \exists \{\xi_i\}_\frac{\epsilon}{2}:\)
+\[
+S(f, P) \geq \sigma(f, P,\{\xi_i\}_\frac{\epsilon}{2}) > S(f, P) - \frac{\epsilon}{2}
+\]
+sumando esta con la desigualdad anterior se obtiene que
+\[
+S(f,P) - s(f,P) > 0 > S(f, P) - s(f, P) - \epsilon
+\]
+ de la desigualdad de la derecha se tiene
+\[
+S(f, P) - s(f, P) < \epsilon
+\]
+Queda demostrada la primera parte.
 
-Usando los resultados \(\overline{I} = I\) y \(I = \underline{I}\) tenemos que \(\overline{I} = I = \underline{I}\).\\
+\end{proof}
+\item \(\forall \epsilon>0\ ,  \exists P_\epsilon \in P[a, b]: P \in P[a, b] \wedge P \supset P_\epsilon \implies S(f, P) - s(f, P) < \epsilon \implies \underline{I} = \overline{I}\)
+\begin{proof}
+Supongamos que \(\forall \epsilon>0\ ,  \exists P_\epsilon \in P[a, b]: P \in P[a, b] \wedge P \supset P_\epsilon \implies S(f, P) - s(f, P) < \epsilon\)\\
 
-Por tanto, concluimos que \(\overline{I} = \underline{I}\), y queda demostrado que 
-\[f \in \mathcal{R}[a, b] \implies \underline{I} = \overline{I} \] \\
+Por \textbf{def de Integral superior} y \textbf{def de Integral inferior} se tiene que
+\[
+ \overline{I} \leq S(f, P) 
+\]
+y
+\[
+ \underline{I} \geq s(f, P)
+\]
+de donde 
+\[
+ \overline{I}  -  \underline{I} \leq S(f,P) - s(f,P) 
+\]
+usando la premisa de la que partimos tenemos que\( \forall \epsilon > 0\)
+\[
+ \overline{I}  -  \underline{I} \leq S(f,P) - s(f,P) < \epsilon
+\]
+como \(\overline{I}  -  \underline{I} \geq 0\) y es constante, entonces \(\overline{I} = \underline{I}\)
 
-\item \textbf{Suficiencia:} Demostremos que \(\underline{I} = \overline{I} \implies f \in \mathcal{R}[a, b]\)\\
+
+\end{proof}
+
+\item \(\underline{I} = \overline{I} \implies f \in \mathcal{R}[a, b]\)\\
+\begin{proof}
 
 Supongamos que  \(\underline{I} = \overline{I}\) y sea \(I\): \(I = \underline{I} = \overline{I}\).\\
 
@@ -173,7 +228,8 @@ Como la desigualdad se cumple para todo \(\epsilon > 0\), por definicion de limi
 \[
 lim(\sigma(f, P,\{\xi_i\})) = I
 \]
-donde por la \textbf{def 0} se tiene que \(f \in \mathcal{R}[a, b]\). Por tanto, queda demostrado que \( \overline{I} = \underline{I} \implies f \in \mathcal{R}[a, b] \)
+donde por la \textbf{def de Riemann integrable} se tiene que \(f \in \mathcal{R}[a, b]\). Por tanto, queda demostrado que \( \overline{I} = \underline{I} \implies f \in \mathcal{R}[a, b] \)
+\end{proof}
 
 
 \end{enumerate}

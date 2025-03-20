@@ -5,9 +5,10 @@ from matplotlib.widgets import Slider, Button,TextBox
 from matplotlib.patches import FancyBboxPatch
 from Visual.paleta import COLOR_PALETTE
 from Visual.widgets import create_rounded_widget
-from Visual.funcionesNP import add_np_prefix
+from Visual.funcionesNP import add_np_prefix,evaluar_intervalo
 from Graficar.Updates.left_plots import update_left_plots,update_last_frame
 from Graficar.Updates.right_plots import update_right_plots_impl
+from Graficar.validarIntegral import es_integral_propia
 from scipy.integrate import quad
 import warnings
 
@@ -15,37 +16,25 @@ def update_animation(frame):
     n = frame + 1
     if frame == frames - 1:
         update_last_frame(f,a,b)
+        global anim
+        anim=None
     else:
         update_left_plots(f,a,b,n)
     plt.draw()
 def update_right_plots(val):
     n = int(slider.val)
     update_right_plots_impl(f,c,d,n)
-
-def evaluate_math_expression(expression: str) -> float:
-    try:
-        expr = add_np_prefix(expression)
-        env = {'np': np}
-        return float(eval(expr, env))
-    except Exception as e:
-        raise ValueError(f"Error en expresión: {str(e)}")
-
 def submit(text):
-    global f, a, b, c, d
+    global f, a, b, c, d, anim, slider, return_button 
     try:
-        
-        func_str = func_textbox.text
-        a = interval_a_textbox.text
-        b = interval_b_textbox.text
-        
-        func_str = add_np_prefix(func_str)
-        a = evaluate_math_expression(interval_a_textbox.text)
-        b = evaluate_math_expression(interval_b_textbox.text)
+        func_str = add_np_prefix(func_textbox.text)
+        a = evaluar_intervalo(interval_a_textbox.text)
+        b = evaluar_intervalo(interval_b_textbox.text)
         if b <= a:
             error_textbox.set_val("Error: 'b' debe ser mayor que 'a'")
             return
-        if (b - a) > 25:
-            error_textbox.set_val("Intervalo máximo: 25 unidades")
+        if (b - a) > 100:
+            error_textbox.set_val("Intervalo máximo: 100 unidades")
             return
         
         if 'x' not in func_str:
@@ -53,7 +42,8 @@ def submit(text):
             return
         
         try:
-            test_result = eval(func_str, {'np': np, 'x': 1.0})
+            test_x = a + (b - a) * 0.5  
+            test_result = eval(func_str, {'np': np, 'x': test_x})
             if not isinstance(test_result, (int, float)):
                 error_textbox.set_val("Función no válida")
                 return
@@ -66,6 +56,9 @@ def submit(text):
         try:
             with warnings.catch_warnings():
                 warnings.filterwarnings("error")
+                if not es_integral_propia(f, a, b):
+                    error_textbox.set_val("Error: Integral impropia (función no definida en el intervalo)")
+                    return
                 quad(f, a, b)
         except:
             error_textbox.set_val("Función no integrable")
@@ -99,6 +92,27 @@ def submit(text):
         slider.on_changed(update_right_plots)
         update_left_plots(f,a,b,1)
         update_right_plots_impl(f,c,d,1)
+
+        # Crear botón Regresar
+        return_button_ax = plt.axes([0.75, 0.07, 0.15, 0.05])
+        return_button_ax.axis('off')
+        return_button_box = FancyBboxPatch(
+            (0, 0), 1, 1,
+            boxstyle="round,pad=0.1,rounding_size=0.1",
+            ec=COLOR_PALETTE['primary'],
+            fc=COLOR_PALETTE['primary'],
+            lw=1.5
+        )
+        return_button_ax.add_patch(return_button_box)
+        return_button = Button(return_button_ax, 'REGRESAR', 
+                             color=COLOR_PALETTE['primary'], 
+                             hovercolor=COLOR_PALETTE['hover'])
+        return_button.label.set_color('white')
+        return_button.label.set_fontweight('bold')
+        return_button.on_clicked(reset_interface)
+        
+        update_left_plots(f,a,b,1)
+        update_right_plots_impl(f,c,d,1)
         
         plt.draw()
     except ValueError:
@@ -106,13 +120,42 @@ def submit(text):
     except Exception as e:
         error_textbox.set_val(f"Error: {str(e)}")
 
+def reset_interface(event):
+    global anim, slider, return_button, fig
+    
+    # Detener y eliminar la animación
+    if anim is not None:
+        anim.event_source.stop()
+        anim = None
+    
+    # Eliminar slider y botón de regresar
+    if slider is not None:
+        slider.ax.remove()
+        slider = None
+    if return_button is not None:
+        return_button.ax.remove()
+        return_button = None
+    
+    # Restaurar elementos iniciales
+    for widget in [func_textbox, interval_a_textbox, interval_b_textbox, button, error_textbox]:
+        widget.ax.set_visible(True)
+    legend_ax.set_visible(True)
+    
+    # Limpiar todos los axes excepto los widgets
+    for ax in fig.axes[:]:
+        if ax not in [widget.ax for widget in [func_textbox, interval_a_textbox, interval_b_textbox, button, error_textbox]] + [legend_ax]:
+            fig.delaxes(ax)
+    
+    error_textbox.set_val('Ingrese función e intervalos [a,b] (La máxima longitud entre a,b es 100)')
+    plt.draw()
+
 # Configuración inicial
 f = lambda x: np.sin(x)
 a, b = 0,0
 c, d = 0,0
 frames = 50
 
-# Crear figura
+# Crear figura y subplots
 fig = plt.figure(figsize=(12, 8), facecolor=COLOR_PALETTE['background'])
 plt.subplots_adjust(bottom=0.4)
 
@@ -149,7 +192,7 @@ error_box = FancyBboxPatch(
     lw=1.5
 )
 error_ax.add_patch(error_box)
-error_textbox = TextBox(error_ax, '', initial='Ingrese función e intervalos [a,b] (La máxima longitud entre a,b solo puede ser 25)')
+error_textbox = TextBox(error_ax, '', initial='Ingrese función e intervalos [a,b] (La máxima longitud entre a,b es 100)')
 error_textbox.set_active(False)
 
 # Crear leyenda de funciones
@@ -166,7 +209,7 @@ legend_text = (
     "log10(x) → log10(x)\n"
     "arcsen(x) → arcsin(x)\n"
     "arccos(x) → arccos(x)\n"
-    "arctan(x) → arctan(x)"
+    "arctan(x) → arctan(x)\n"
 )
 
 # Configurar posición y estilo de la leyenda

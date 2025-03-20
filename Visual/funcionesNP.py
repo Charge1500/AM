@@ -1,11 +1,14 @@
+import numpy as np
 import re
 
 def add_np_prefix(func_str: str) -> str:
   
-    funciones = ['sin', 'cos', 'tan', 'exp', 'log', 'log10', 'log2', 
-                'sqrt', 'arcsin', 'arccos', 'arctan']
+    funciones = ['sin', 'cos', 'tan', 'exp', 'log', 'log10', 'log2', 'sqrt']
     for func in funciones:
         func_str = func_str.replace(f"{func}(", f"np.{func}(")
+    func_str = func_str.replace("arcnp.sin(", "np.arcsin(")
+    func_str = func_str.replace("arcnp.cos(", "np.arccos(")
+    func_str = func_str.replace("arcnp.tan(", "np.arctan(")
     
     constantes = {'pi': 'np.pi', 'e': 'np.e'}
     for const, np_const in constantes.items():
@@ -14,3 +17,21 @@ def add_np_prefix(func_str: str) -> str:
     func_str = func_str.replace('^', '**')
     
     return func_str
+
+def convertir_constantes(expresion: str) -> str:
+    # Reemplazar pi → np.pi y euler/e → np.e
+    expresion = expresion.replace('pi', str(np.pi))
+    expresion = expresion.replace('euler', str(np.e))
+    expresion = expresion.replace('e', str(np.e))  # También manejar 'e' como alias de euler
+    return expresion
+
+def evaluar_intervalo(intervalo: str) -> float:
+    try:
+        # Convertir pi y euler a valores numéricos
+        intervalo = convertir_constantes(intervalo)
+        
+        # Evaluar la expresión resultante
+        return float(eval(intervalo, {'__builtins__': None}))
+        
+    except Exception as e:
+        raise ValueError(f"Error en intervalo: {str(e)}")

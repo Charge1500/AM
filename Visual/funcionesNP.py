@@ -39,19 +39,19 @@ def add_np_prefix(func_str: str) -> str:
                 try:
                     global exp
                     exp = eval(exp_str)
+                    global expo
+                    if validate_expo(exp):
+                        expo = True
+                    else:
+                        expo = False
                 except:
-                    raise ValueError(f"Error evaluando exponente: {exp_str}")
+                    None
                 
-                global expo
-                if validate_expo(exp):
-                    expo = True
-                else:
-                    expo = False
-
                 return func_retorno
             
             # Sustituir
             nueva_func_str = re.sub(patron, reemplazo, func_str)
+
             if not sustituido:
                 break
                 

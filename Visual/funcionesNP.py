@@ -14,10 +14,20 @@ def add_np_prefix(func_str: str) -> str:
     for const, np_const in constantes.items():
         func_str = re.sub(rf'\b{const}\b', np_const, func_str)
     
-    func_str = func_str.replace('^', '**')
+    patron = r'power\(((?:[^()]|\(.*?\))+?),\s*((?:[^()]|\(.*?\))+?)\)'
+    if re.match(patron,func_str):
+        while True:
+            nueva_func_str = re.sub(
+                patron,
+                lambda match: f'(np.sign({match.group(1)})) * (np.abs({match.group(1)}) ** ({match.group(2)}))',
+                func_str
+            )
+            if nueva_func_str == func_str:
+                break  # No hay más cambios, salir del bucle
+            func_str = nueva_func_str
     
     return func_str
-
+    
 def convertir_constantes(expresion: str) -> str:
     # Reemplazar pi → np.pi y euler/e → np.e
     expresion = expresion.replace('pi', str(np.pi))

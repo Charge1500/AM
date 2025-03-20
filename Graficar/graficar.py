@@ -3,7 +3,7 @@ import numpy as np
 from matplotlib.patches import FancyBboxPatch
 from Visual.paleta import COLOR_PALETTE
 
-def plot_darboax(f, a, b, n, x_partition, sum_value, color, title):
+def plot_darboux(f, a, b, n, x_partition, sum_value, color, title):
     x_vals = np.linspace(a, b, 1000)
     y_vals = f(x_vals)
     plt.plot(x_vals, y_vals, color=COLOR_PALETTE['text'], linewidth=1.5)

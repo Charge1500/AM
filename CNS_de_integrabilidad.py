@@ -5,7 +5,7 @@ from matplotlib.widgets import Slider, Button,TextBox
 from matplotlib.patches import FancyBboxPatch
 from Visual.paleta import COLOR_PALETTE
 from Visual.widgets import create_rounded_widget
-from Visual.funcionesNP import add_np_prefix,evaluar_intervalo
+from Visual.funcionesNP import add_np_prefix,evaluar_intervalo, return_expo
 from Graficar.Updates.left_plots import update_left_plots,update_last_frame
 from Graficar.Updates.right_plots import update_right_plots_impl
 from Graficar.validarIntegral import es_integral_propia
@@ -39,6 +39,10 @@ def submit(text):
         """if (lambda arr: any(arrExp) ):
             if(a<=0):
                 return"""
+        if return_expo():
+            if a < 0 :
+                error_textbox.set_val("Error: 'a' debe ser mayor que 0")
+                return
         if 'x' not in func_str:
             error_textbox.set_val("La función debe contener 'x'")
             return

@@ -1,8 +1,11 @@
 import numpy as np
 import re
+import fractions as Fraction 
+import sympy as sp
 
+expo = False
 def add_np_prefix(func_str: str) -> str:
-  
+    global expo
     funciones = ['sin', 'cos', 'tan', 'exp', 'log', 'log10', 'log2', 'sqrt']
     for func in funciones:
         func_str = func_str.replace(f"{func}(", f"np.{func}(")
@@ -24,6 +27,13 @@ def add_np_prefix(func_str: str) -> str:
             )
             if nueva_func_str == func_str:
                 break  # No hay más cambios, salir del bucle
+            print(lambda match: match.group(2))
+            if validarExpo(lambda match: match.group(2)):
+                expo = True
+            else:
+                expo = False
+            #print(expo)
+            
             func_str = nueva_func_str
     
     return func_str
@@ -45,3 +55,20 @@ def evaluar_intervalo(intervalo: str) -> float:
         
     except Exception as e:
         raise ValueError(f"Error en intervalo: {str(e)}")
+
+def validarExpo(e):
+    try:
+        if (-1) ** float((1/float(e))) >= 0 :
+            return True
+        else:
+            return False
+    except:
+        print("except")
+        print(e)
+        return False
+
+
+def return_expo():
+    global expo
+    return expo
+

@@ -36,7 +36,9 @@ def submit(text):
         if (b - a) > 100:
             error_textbox.set_val("Intervalo máximo: 100 unidades")
             return
-        
+        """if (lambda arr: any(arrExp) ):
+            if(a<=0):
+                return"""
         if 'x' not in func_str:
             error_textbox.set_val("La función debe contener 'x'")
             return

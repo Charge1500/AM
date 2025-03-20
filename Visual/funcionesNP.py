@@ -1,9 +1,7 @@
 import numpy as np
 import re
-import fractions as Fraction 
 
 expo = False
-# Lista para almacenar los exponentes
 exp = None
 func_retorno = None
 def add_np_prefix(func_str: str) -> str:

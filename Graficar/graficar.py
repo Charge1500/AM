@@ -48,6 +48,3 @@ def es_integral_propia(f, a, b, puntos_muestra=1000):
     
     except:
         return False
-
-def raiz_impar(x, n):
-    return np.sign(x) * np.abs(x) ** (1/n)

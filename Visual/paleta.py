@@ -20,7 +20,7 @@ legend_text = (
     "tan(x) → tan(x)\n"
     "e^x → exp(x)\n"
     "ln(x) → log(x)\n"
-    "x^y → x^y\n"
+    "x^y → power(x, y)\n"
     "log2(x) → log2(x)\n"
     "log10(x) → log10(x)\n"
     "arcsen(x) → arcsin(x)\n"

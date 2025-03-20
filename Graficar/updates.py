@@ -1,8 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from Visual.paleta import COLOR_PALETTE
-from Graficar.darbouxSum import darboux_sums
-from Graficar.graficar import plot_darboux, plot_area_under_curve
+from Graficar.graficar import plot_darboux, plot_area_under_curve,darboux_sums
 from scipy.integrate import quad
 
 def update_left_plots(f,a,b,n):

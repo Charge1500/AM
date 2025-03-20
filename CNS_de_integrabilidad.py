@@ -4,10 +4,10 @@ from matplotlib.animation import FuncAnimation
 from matplotlib.widgets import Slider, Button,TextBox
 from matplotlib.patches import FancyBboxPatch
 from Visual.paleta import COLOR_PALETTE,legend_text
-from Visual.widgets import create_rounded_widget
+from Visual.widgets import create_textbox_default,create_ax_personalized
 from Visual.funcionesNP import add_np_prefix,evaluar_intervalo, return_expo
 from Graficar.updates import update_left_plots,update_last_frame,update_right_plots_impl
-from Graficar.graficar import es_integral_propia
+from Graficar.graficar import es_integral_propia,darboux_sums
 from scipy.integrate import quad
 import warnings
 
@@ -55,7 +55,6 @@ def submit(text):
         except:
             error_textbox.set_val("Error en la función")
             return
-        
         f = lambda x: eval(func_str, {'np': np, 'x': x})
         
         try:
@@ -80,16 +79,16 @@ def submit(text):
         global anim
         anim = FuncAnimation(fig, update_animation, frames=frames, interval=300, repeat=False)
         slider_ax = plt.axes([0.3, 0.08, 0.4, 0.03], facecolor=COLOR_PALETTE['background'])
-        plt.gca().add_patch(FancyBboxPatch(
+        """plt.gca().add_patch(FancyBboxPatch(
             (0,0), 1, 1,
             boxstyle="round,pad=0.1,rounding_size=0.05",
             ec=COLOR_PALETTE['primary'],
             fc=COLOR_PALETTE['background'],
             lw=1
-        ))
+        ))"""
         global slider
         slider = Slider(
-            slider_ax, 'Precisión (n)', 1, 200, 
+            slider_ax, 'Precisión (n)', 1, 100, 
             valinit=1, valstep=1,
             color=COLOR_PALETTE['primary'],
             handle_style={'facecolor': COLOR_PALETTE['primary'], 'edgecolor': 'white'}
@@ -99,19 +98,8 @@ def submit(text):
         update_right_plots_impl(f,c,d,1)
 
         # Crear botón Regresar
-        return_button_ax = plt.axes([0.75, 0.07, 0.15, 0.05])
-        return_button_ax.axis('off')
-        return_button_box = FancyBboxPatch(
-            (0, 0), 1, 1,
-            boxstyle="round,pad=0.1,rounding_size=0.1",
-            ec=COLOR_PALETTE['primary'],
-            fc=COLOR_PALETTE['primary'],
-            lw=1.5
-        )
-        return_button_ax.add_patch(return_button_box)
-        return_button = Button(return_button_ax, 'REGRESAR', 
-                             color=COLOR_PALETTE['primary'], 
-                             hovercolor=COLOR_PALETTE['hover'])
+        return_button_ax =create_ax_personalized([0.75, 0.07, 0.15, 0.05],"round,pad=0.1,rounding_size=0.1",'primary',COLOR_PALETTE['primary'],1.5)
+        return_button = Button(return_button_ax, 'REGRESAR', color=COLOR_PALETTE['primary'], hovercolor=COLOR_PALETTE['hover'])
         return_button.label.set_color('white')
         return_button.label.set_fontweight('bold')
         return_button.on_clicked(reset_interface)
@@ -132,14 +120,11 @@ def reset_interface(event):
     if anim is not None:
         anim.event_source.stop()
         anim = None
-    
-    # Eliminar slider y botón de regresar
-    if slider is not None:
-        slider.ax.remove()
-        slider = None
-    if return_button is not None:
-        return_button.ax.remove()
-        return_button = None
+
+    slider.ax.remove()
+    slider = None
+    return_button.ax.remove()
+    return_button = None
     
     # Restaurar elementos iniciales
     for widget in [func_textbox, interval_a_textbox, interval_b_textbox, button, error_textbox]:
@@ -150,7 +135,7 @@ def reset_interface(event):
     for ax in fig.axes[:]:
         if ax not in [widget.ax for widget in [func_textbox, interval_a_textbox, interval_b_textbox, button, error_textbox]] + [legend_ax]:
             fig.delaxes(ax)
-    
+
     error_textbox.set_val('Ingrese función e intervalos [a,b] (La máxima longitud entre a,b es 100)')
     plt.draw()
 
@@ -161,55 +146,22 @@ fig = plt.figure(figsize=(12, 8), facecolor=COLOR_PALETTE['background'])
 plt.subplots_adjust(bottom=0.4)
 
 # Widgets de entrada
-func_textbox = create_rounded_widget([0.25, 0.6, 0.5, 0.06], 'f(x) = ', 'sin(x)')
-interval_a_textbox = create_rounded_widget([0.25, 0.5, 0.2, 0.06], 'a = ', '0')
-interval_b_textbox = create_rounded_widget([0.55, 0.5, 0.2, 0.06], 'b = ', '5')
+func_textbox = create_textbox_default([0.25, 0.6, 0.5, 0.06], 'f(x) = ', 'sin(x)')
+interval_a_textbox = create_textbox_default([0.25, 0.5, 0.2, 0.06], 'a = ', '0')
+interval_b_textbox = create_textbox_default([0.55, 0.5, 0.2, 0.06], 'b = ', '5')
 
 # Botón con bordes redondeados
-button_ax = plt.axes([0.4, 0.4, 0.2, 0.07])
-button_ax.axis('off')
-button_box = FancyBboxPatch(
-    (0, 0), 1, 1,
-    boxstyle="round,pad=0.1,rounding_size=0.1",
-    ec=COLOR_PALETTE['primary'],
-    fc=COLOR_PALETTE['primary'],
-    lw=1.5
-)
-button_ax.add_patch(button_box)
-button = Button(button_ax, 'CALCULAR', color=COLOR_PALETTE['primary'], 
-               hovercolor=COLOR_PALETTE['hover'])
+button_ax = create_ax_personalized([0.4, 0.4, 0.2, 0.07],"round,pad=0.1,rounding_size=0.1",'primary',COLOR_PALETTE['primary'],1.5)
+button = Button(button_ax, 'CALCULAR', color=COLOR_PALETTE['primary'], hovercolor=COLOR_PALETTE['hover'])
 button.label.set_color('white')
 button.label.set_fontweight('bold')
 button.on_clicked(submit)
 
-# Cuadro de error
-error_ax = plt.axes([0.25, 0.3, 0.5, 0.06])
-error_ax.axis('off')
-error_box = FancyBboxPatch(
-    (0, 0), 1, 1,
-    boxstyle="round,pad=0.1,rounding_size=0.05",
-    ec=COLOR_PALETTE['error'],
-    fc='#FDEDEC',
-    lw=1.5
-)
-error_ax.add_patch(error_box)
-error_textbox = TextBox(error_ax, '', initial='Ingrese función e intervalos [a,b] (La máxima longitud entre a,b es 100)')
+err_ax=create_ax_personalized([0.25, 0.3, 0.5, 0.06],"round,pad=0.1,rounding_size=0.05",'error','#FDEDEC',1.5)
+error_textbox = TextBox(err_ax,'', initial='Ingrese función e intervalos [a,b] (La máxima longitud entre a,b es 100)')
 error_textbox.set_active(False)
 
-# Configurar posición y estilo de la leyenda
-legend_ax = plt.axes([0.85, 0.82, 0.3, 0.15], facecolor='none')
-legend_ax.axis('off')
-
-# Crear caja decorativa
-legend_box = FancyBboxPatch(
-    (0, 0), 1, 1,
-    boxstyle="round,pad=0.1,rounding_size=0.05",
-    ec=COLOR_PALETTE['secondary'],
-    fc=COLOR_PALETTE['background'],
-    lw=1
-)
-legend_ax.add_patch(legend_box)
-
+legend_ax = create_ax_personalized([0.85, 0.82, 0.3, 0.15],"round,pad=0.1,rounding_size=0.05",'secondary',COLOR_PALETTE['background'],1)
 # Añadir texto
 legend_ax.text(
     0.05, 0.95, legend_text,

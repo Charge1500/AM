@@ -1,6 +1,6 @@
 import numpy as np
 
-def darboax_sums(f, a, b, n):
+def darboux_sums(f, a, b, n):
     x = np.linspace(a, b, n + 1)
     dx = (b - a) / n
     lower_sum = 0

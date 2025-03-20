@@ -11,3 +11,19 @@ COLOR_PALETTE = {
 }
 
 plt.style.use('seaborn-v0_8-darkgrid')
+
+legend_text = (
+    "Instrucciones:\n"
+    "√x → sqrt(x)\n"
+    "sen(x) → sin(x)\n"
+    "cos(x) → cos(x)\n"
+    "tan(x) → tan(x)\n"
+    "e^x → exp(x)\n"
+    "ln(x) → log(x)\n"
+    "x^y → x^y\n"
+    "log2(x) → log2(x)\n"
+    "log10(x) → log10(x)\n"
+    "arcsen(x) → arcsin(x)\n"
+    "arccos(x) → arccos(x)\n"
+    "arctan(x) → arctan(x)\n"
+)

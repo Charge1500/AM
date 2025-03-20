@@ -3,12 +3,11 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from matplotlib.widgets import Slider, Button,TextBox
 from matplotlib.patches import FancyBboxPatch
-from Visual.paleta import COLOR_PALETTE
+from Visual.paleta import COLOR_PALETTE,legend_text
 from Visual.widgets import create_rounded_widget
 from Visual.funcionesNP import add_np_prefix,evaluar_intervalo, return_expo
-from Graficar.Updates.left_plots import update_left_plots,update_last_frame
-from Graficar.Updates.right_plots import update_right_plots_impl
-from Graficar.validarIntegral import es_integral_propia
+from Graficar.updates import update_left_plots,update_last_frame,update_right_plots_impl
+from Graficar.graficar import es_integral_propia
 from scipy.integrate import quad
 import warnings
 
@@ -155,10 +154,6 @@ def reset_interface(event):
     error_textbox.set_val('Ingrese función e intervalos [a,b] (La máxima longitud entre a,b es 100)')
     plt.draw()
 
-# Configuración inicial
-f = lambda x: np.sin(x)
-a, b = 0,0
-c, d = 0,0
 frames = 50
 
 # Crear figura y subplots
@@ -200,23 +195,6 @@ error_box = FancyBboxPatch(
 error_ax.add_patch(error_box)
 error_textbox = TextBox(error_ax, '', initial='Ingrese función e intervalos [a,b] (La máxima longitud entre a,b es 100)')
 error_textbox.set_active(False)
-
-# Crear leyenda de funciones
-legend_text = (
-    "Instrucciones:\n"
-    "√x → sqrt(x)\n"
-    "sen(x) → sin(x)\n"
-    "cos(x) → cos(x)\n"
-    "tan(x) → tan(x)\n"
-    "e^x → exp(x)\n"
-    "ln(x) → log(x)\n"
-    "x^y → x^y\n"
-    "log2(x) → log2(x)\n"
-    "log10(x) → log10(x)\n"
-    "arcsen(x) → arcsin(x)\n"
-    "arccos(x) → arccos(x)\n"
-    "arctan(x) → arctan(x)\n"
-)
 
 # Configurar posición y estilo de la leyenda
 legend_ax = plt.axes([0.85, 0.82, 0.3, 0.15], facecolor='none')

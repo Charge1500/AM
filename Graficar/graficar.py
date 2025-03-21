@@ -56,6 +56,7 @@ def es_integral_propia(f, a, b, puntos_muestra=1000):
         puntos = np.linspace(a, b, puntos_muestra)
         for x in puntos:
             if not np.isfinite(f(x)):
+                print("ab")
                 return False
         
         return True

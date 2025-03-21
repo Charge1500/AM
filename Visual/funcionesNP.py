@@ -4,9 +4,10 @@ import re
 expo = False
 exp = None
 func_retorno = None
+bases = []
 def add_np_prefix(func_str: str) -> str:
     global expo
-    funciones = ['sin', 'cos', 'tan', 'exp', 'log', 'log10', 'log2', 'sqrt']
+    funciones = ['sin', 'cos', 'tan', 'log', 'log10', 'log2', 'sqrt']
     for func in funciones:
         func_str = func_str.replace(f"{func}(", f"np.{func}(")
     func_str = func_str.replace("arcnp.sin(", "np.arcsin(")
@@ -44,7 +45,19 @@ def add_np_prefix(func_str: str) -> str:
                         expo = False
                 except:
                     None
-                
+                global bases
+                print(base)
+                print(base)
+                try:
+                    f = lambda x: eval(base, {'np': np, 'x': 2.0})
+                    bases.append(f)
+                    func_retorno = base
+                except:
+                    func = add_np_prefix(base)
+                    func_retorno = func
+                    #f = lambda x: eval(func, {'np': np, 'x': x})
+                bases.append(f)
+
                 return func_retorno
             
             # Sustituir
@@ -56,8 +69,7 @@ def add_np_prefix(func_str: str) -> str:
             func_str = nueva_func_str
             
             #print(expo)
-
-        return func_str
+    return func_str
     
 def convertir_constantes(expresion: str) -> str:
     expresion = expresion.replace('pi', str(np.pi))
@@ -79,7 +91,7 @@ def validate_expo(e):
     global exp_str
     try:
         # Raiz cuadrada
-        if (-1) ** float((1/float(e))) >= 0 :
+        if (-1) ** float((1/float(e))) >= 0:
             return True
         print("a")
         return False

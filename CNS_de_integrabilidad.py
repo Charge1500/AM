@@ -5,11 +5,12 @@ from matplotlib.widgets import Slider, Button,TextBox
 from matplotlib.patches import FancyBboxPatch
 from Visual.paleta import COLOR_PALETTE,legend_text
 from Visual.widgets import create_textbox_default,create_ax_personalized
-from Visual.funcionesNP import add_np_prefix,evaluar_intervalo, return_expo
+from Visual.funcionesNP import add_np_prefix,evaluar_intervalo, return_expo, bases
 from Graficar.updates import update_left_plots,update_last_frame,update_right_plots_impl
 from Graficar.graficar import es_integral_propia,darboux_sums
 from scipy.integrate import quad
 import warnings
+from sympy import symbols, solve, Interval, Piecewise
 
 def update_animation(frame):
     n = frame + 1
@@ -36,16 +37,23 @@ def submit(text):
             error_textbox.set_val("Intervalo máximo: 100 unidades")
             return
         if return_expo():
-            if a < 0 :
-                error_textbox.set_val("Error: 'a' debe ser mayor que 0")
-                return
+            x_vals = np.linspace(a, b, 100)
+            print(bases)
+            f = lambda x: eval(base, {'np': np, 'x': x})
+            for base in bases:
+                print(f(-1))
+                if not np.all(f(x_vals) >= 0):
+                    #expos.clear()
+                    bases.clear()
+                    error_textbox.set_val("Error: El primer párametro de power(,) debe ser positivo si está calculando una raíz cuadrada")
+                    return
         if 'x' not in func_str:
             error_textbox.set_val("La función debe contener 'x'")
             return
-        
         try:
             test_x = a + (b - a) * 0.5  
             test_result = eval(func_str, {'np': np, 'x': test_x})
+            print('aa')
             if not isinstance(test_result, (int, float)):
                 error_textbox.set_val("Función no válida")
                 return
@@ -111,8 +119,11 @@ def submit(text):
         error_textbox.set_val(f"Error: {str(e)}")
 
 def reset_interface(event):
-    global anim, slider, return_button, fig
-    
+    global anim, slider, return_button, fig, bases
+
+    bases.clear()
+    #expos.clear()
+
     # Detener y eliminar la animación
     if anim is not None:
         anim.event_source.stop()

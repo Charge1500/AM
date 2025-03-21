@@ -9,7 +9,7 @@
 \fancyfoot[R]{Ailema Matos, Raúl R. Espinosa}
 \fancyfoot[C]{\thepage}
 
-\title{Igualdad de las integrales inferior y superior como criterio de integrabilidad de Riemann}
+\title{Demostración de la condición necesaria y suficiente de integrabilidad de Riemann}
 \author{
 Ailema Matos C121,
 Raúl R. Espinosa C122 
@@ -48,7 +48,7 @@ Sea \( f: \mathbb{R} \to \mathbb{R} \) entonces se cumple que
 \begin{proof}
 Demostremos la afirmación 1:\\
 
-Sean \(\{m_i\}\) el conjunto de los minimos de cada intervalo de \(P\) y \(\{M_i\}\) el conjunto de los maximos de cada intervalo de \(P\).
+Sean \(\{m_i\}\) el conjunto de los mínimos de cada intervalo de \(P\) y \(\{M_i\}\) el conjunto de los máximos de cada intervalo de \(P\).
 Note que 
 \[
 m_i \leq f(\xi_i) \leq M_i
@@ -86,7 +86,7 @@ de donde
 \]
 
 Queda demostrado que 
-   \( \forall \epsilon > 0,\ \exists \{\xi_i\} \) con \( \sigma(f, P, \{\xi_i\}) < s(f, P) + \epsilon \), que es lo mismo que \(s(f, P)\) es la mayor de las cotas inferiores por lo que es infimo.\\
+   \( \forall \epsilon > 0,\ \exists \{\xi_i\} \) con \( \sigma(f, P, \{\xi_i\}) < s(f, P) + \epsilon \), que es lo mismo que \(s(f, P)\) es la mayor de las cotas inferiores por lo que es ínfimo.\\
 
 Dado \(\epsilon > 0\), por definición de supremo, para cada \(i\) existe \(\xi_i \in [x_{i-1}, x_i]\) tal que
 \[
@@ -111,7 +111,7 @@ Queda demostrado que
 
 
 
-\begin{proof}\textbf{Demostracion del teorema}\\
+\begin{proof}\textbf{Demostración del teorema}\\
 
 Para demostrar el teorema, procedemos en tres partes:
 \begin{enumerate}
@@ -131,7 +131,7 @@ existe un único número \( I \) tal que \( \forall \epsilon > 0 \), existe una 
     \[
     |\sigma(f, P,\{\xi_i\}) - I| < \frac\epsilon2
     \]
-por la \textbf{Afirmacion 2} se tiene \(s(f, P) = inf\{\sigma(f, P,\{\xi_i\})\}\), de donde por definicion de infimo
+por la \textbf{Afirmación 2} se tiene \(s(f, P) = inf\{\sigma(f, P,\{\xi_i\})\}\), de donde por definición de ínfimo
 \( \forall \epsilon> 0 \exists \{\xi_i\}_\frac{\epsilon}{2}:\)
 \[
 s(f, P) \leq \sigma(f, P,\{\xi_i\}_\frac{\epsilon}{2}) < s(f, P) + \frac{\epsilon}{2}
@@ -140,7 +140,7 @@ multiplicvando por (-1)
 \[
 -s(f, P) \geq -\sigma(f, P,\{\xi_i\}_\frac{\epsilon}{2}) > -s(f, P) - \frac{\epsilon}{2}
 \]
-por la \textbf{Afirmacion 2} se tiene \(S(f, P) = sup\{\sigma(f, P,\{\xi_i\})\}\), de donde por definicion de supremo 
+por la \textbf{Afirmación 2} se tiene \(S(f, P) = sup\{\sigma(f, P,\{\xi_i\})\}\), de donde por definición de supremo 
 \( \forall \epsilon> 0 \exists \{\xi_i\}_\frac{\epsilon}{2}:\)
 \[
 S(f, P) \geq \sigma(f, P,\{\xi_i\}_\frac{\epsilon}{2}) > S(f, P) - \frac{\epsilon}{2}
@@ -186,7 +186,7 @@ como \(\overline{I}  -  \underline{I} \geq 0\) y es constante, entonces \(\overl
 
 Supongamos que  \(\underline{I} = \overline{I}\) y sea \(I\): \(I = \underline{I} = \overline{I}\).\\
 
-Por definicion de \(\overline{I}\) (infimo) y de \(\underline{I}\) (supremo) se tiene que 
+Por definición de \(\overline{I}\) (ínfimo) y de \(\underline{I}\) (supremo) se tiene que 
 \[
 S(f, P) - \overline{I} \geq 0 \wedge lim (S(f, P) - \overline{I}) = 0
 \]
@@ -194,7 +194,7 @@ S(f, P) - \overline{I} \geq 0 \wedge lim (S(f, P) - \overline{I}) = 0
 \[
 \underline{I} - s(f, P) \geq 0 \wedge lim (s(f, P) - \underline{I}) = 0
 \]
-Por definicion de limite para todo \(x > 0, y > 0\), tomando \(\epsilon = max(x, y)\) se tienen las desigualdades 
+Por definición de límite para todo \(x > 0, y > 0\), tomando \(\epsilon = max(x, y)\) se tienen las desigualdades 
 \[
 0< |S(f, P) - \overline{I} | < x \leq \epsilon
 \]
@@ -208,7 +208,7 @@ que son equivalentes a
 \[
 0<  \underline{I} -  s(f, P)  < \epsilon
 \]
-Por la \textbf{Afirmacion 1} tenemos que 
+Por la \textbf{Afirmación 1} tenemos que 
 \[
 s(f, P) \leq \sigma(f, P,\{\xi_i\}) \leq S(f, P)
 \]
@@ -224,7 +224,7 @@ que se puede escribir como
 \[
 0 <|\sigma(f, P,\{\xi_i\}) - I |< \epsilon
 \]
-Como la desigualdad se cumple para todo \(\epsilon > 0\), por definicion de limite se tiene que 
+Como la desigualdad se cumple para todo \(\epsilon > 0\), por definición de límite se tiene que 
 \[
 lim(\sigma(f, P,\{\xi_i\})) = I
 \]
